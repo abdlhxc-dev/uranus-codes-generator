@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مولّد قائمة الأكواد</title>
+  <style>
+    :root {
+      --primary: #10b981; /* Emerald Green */
+      --primary-dark: #059669;
+      --bg-gradient: linear-gradient(135deg, #064e3b, #047857, #064e3b);
+      --card-bg: rgba(255, 255, 255, 0.08); /* Lighter, more transparent base for glass effect */
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-image: var(--bg-gradient);
+	      color: #ffffff; /* لون النص المدخل أبيض ناصع */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 980px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Lighter, more subtle shadow */
+      padding: 20px 18px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Lighter border for glass effect */
+      backdrop-filter: blur(20px) saturate(180%); /* Stronger blur and saturation for glass effect */
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .title {
+      font-size: clamp(18px, 1.8vw, 22px);
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      font-size: 11px;
+	      color: #ffffff; /* لون النص المدخل أبيض ناصع */
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--primary); /* تم التعديل */
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 800px) {
+      body {
+        padding: 10px;
+      }
+      .card {
+        padding: 16px 14px 18px;
+        border-radius: 14px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+	      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #d1d5db;
+      margin-bottom: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 170px;
+      padding: 10px 11px;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+	      background: rgba(255, 255, 255, 0.05); /* Very light transparent background for inputs */
+	      color: #ffffff;
+      resize: vertical;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      outline: none;
+	      transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	      will-change: border-color, box-shadow, background;
+    }
+
+    textarea::placeholder,
+    input[type="url"]::placeholder {
+      color: #ffffff; /* لون placeholder أبيض ناصع */
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4);
+	      background: rgba(255, 255, 255, 0.1); /* Slightly darker transparent background on focus */
+    }
+
+    input[type="url"] {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+	      background: rgba(4, 120, 87, 0.2); /* Lighter Green/Transparent for Input */
+	      color: #ffffff;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      outline: none;
+	      transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	      will-change: border-color, box-shadow, background;
+    }
+
+    input[type="url"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4);
+	      background: rgba(4, 120, 87, 0.4); /* Darker Green/Transparent on Input Focus */
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      font-size: 13px;
+      padding: 9px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      white-space: nowrap;	      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	      will-change: transform, box-shadow, background, opacity;  }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #f9fafb;
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(16, 185, 129, 0.7);
+    }
+
+    .btn-ghost {
+	      background: rgba(255, 255, 255, 0.15); /* Transparent background for ghost button */
+      color: #e5e7eb;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-ghost:hover {
+	      background: rgba(255, 255, 255, 0.25); /* Transparent background on ghost button hover */
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+      opacity: 0.9;
+    }
+
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .btn-icon::before,
+    .btn-icon::after {
+      content: "";
+      position: absolute;
+      border-radius: 4px;
+      border: 1px solid currentColor;
+    }
+
+    .btn-icon::before {
+      width: 12px;
+      height: 9px;
+      top: 4px;
+      left: 0;
+    }
+
+    .btn-icon::after {
+      width: 12px;
+      height: 9px;
+      top: 0;
+      left: 4px;
+      background: transparent;
+    }
+
+    .small-info {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-soft {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+	      background: var(--primary);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+	      background: rgba(6, 78, 59, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal {
+	      background: #064e3b;
+      border-radius: 16px;
+      padding: 20px 18px 18px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      animation: fadeInScale 0.16s ease-out;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #f9fafb;
+    }
+
+    .modal-text {
+      font-size: 13px;
+      color: #d1d5db;
+      margin-bottom: 14px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .modal-count {
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-bottom: 2px;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="title-block">
+          <div class="title">مولّد قائمة الأكواد</div>
+          <div class="subtitle">تحويل الأكواد إلى صيغة موحّدة جاهزة للاستخدام.</div>
+        </div>
+        <div class="badge">
+          <span class="badge-dot"></span>
+          تنسيق موحّد للأسطر
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- حقول الروابط -->
+        <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <label for="activationLinkInput">رابط شرح التفعيل (سيتم تضمينه في الناتج)</label>
+            <div class="hint">يمكنك تغيير هذا الرابط في أي وقت.</div>
+            <input type="url" id="activationLinkInput" placeholder="أدخل رابط شرح التفعيل">
+          </div>
+          <div>
+            <label for="siteLinkInput">رابط الموقع (سيتم تضمينه في الناتج)</label>
+            <div class="hint">يمكنك تغيير هذا الرابط في أي وقت.</div>
+            <input type="url" id="siteLinkInput" placeholder="أدخل رابط الموقع">
+          </div>
+        </div>
+
+        <!-- إدخال الأكواد -->
+        <div>
+          <label for="codesInput">الأكواد</label>
+          <div class="hint">كل كود في سطر مستقل.</div>
+          <textarea id="codesInput" placeholder="A5F36393D0
+8FBF84AE38
+7ECDF90E5C"></textarea>
+
+          <div class="actions">
+            <button class="btn btn-primary" onclick="generateList()">
+              <span>تجهيز القائمة</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- النتيجة -->
+        <div>
+          <label for="resultBox">الناتج النهائي</label>
+          <div class="hint">نص جاهز للصق في أي نظام يدعم الأسطر المتعددة.</div>
+          <textarea id="resultBox" readonly placeholder="الناتج يظهر هنا بعد تجهيز القائمة."></textarea>
+
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="copyText()">
+              <span class="btn-icon"></span>
+              <span>نسخ الناتج</span>
+            </button>
+
+          </div>
+
+          <div class="small-info">
+            <span class="dot-soft"></span>
+            <span>يتم النسخ مع الحفاظ على كل سطر كما هو.</span>
+          </div>
+        </div>
+      </div>
+      
+	      <div class="footer" style="text-align: center; margin-top: 20px; font-size: 12px; color: #ffffff; /* لون أبيض ناصع لحقوق النشر */">
+	        <span>
+	        حقوق اورانوس محفوظة &copy; 2025
+	        </span>
+	      </div>
+    </div>
+
+
+  </div>
+
+  <!-- نافذة منبثقة -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-title">تم نسخ النص</div>
+      <div class="modal-count" id="modalCount"></div>
+      <div class="modal-text">
+        تم نسخ المحتوى ويمكن لصقه في الجهة المطلوبة.
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ... (بقية كود JavaScript)
+    function generateList() {
+      const codesInput = document.getElementById('codesInput').value;
+      const activationLink = document.getElementById('activationLinkInput').value;
+      const siteLink = document.getElementById('siteLinkInput').value;
+      const resultBox = document.getElementById('resultBox');
+
+      const codes = codesInput.split('\n').map(code => code.trim()).filter(code => code.length > 0);
+
+      const result = codes.map(code => {
+        return `${code}
+رابط شرح التفعيل: ${activationLink}
+رابط الموقع: ${siteLink}`;
+      }).join('\n\n');
+
+      resultBox.value = result;
+    }
+
+    function copyText() {
+      const resultBox = document.getElementById('resultBox');
+      resultBox.select();
+      resultBox.setSelectionRange(0, 99999); // For mobile devices
+
+      try {
+        document.execCommand('copy');
+        showModal(resultBox.value.split('\n\n').length);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
+      }
+    }
+
+    function showModal(count) {
+      document.getElementById('modalCount').textContent = `تم تجهيز ونسخ ${count} كود.`;
+      document.getElementById('modalOverlay').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
